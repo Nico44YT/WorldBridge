@@ -10,6 +10,7 @@ import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.letscode.worldbridge.block.ModBlockRegistry;
 import net.letscode.worldbridge.commands.WorldBridgeCommand;
 import net.letscode.worldbridge.item.ModItemRegistry;
+import net.letscode.worldbridge.loottable.ModLoottableRegistry;
 import net.letscode.worldbridge.networking.WorldBridgePackets;
 import net.letscode.worldbridge.networking.packets.SyncPersistentDataS2C;
 import net.letscode.worldbridge.screen.ModScreenRegistry;
@@ -35,6 +36,7 @@ public class WorldBridge implements ModInitializer {
         ModItemRegistry.register();
         ModBlockRegistry.register();
         ModScreenRegistry.register();
+        ModLoottableRegistry.register();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             syncedData = new SyncedData(PersistentData.getServerState(server).writeNbt(new NbtCompound()));
