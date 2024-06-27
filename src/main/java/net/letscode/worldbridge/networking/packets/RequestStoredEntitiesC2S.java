@@ -36,7 +36,7 @@ public record RequestStoredEntitiesC2S() implements FabricPacket, PacketReceiver
 
     public static void receiveServer(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler, PacketByteBuf buf, PacketSender responseSender) {
         server.execute(() -> {
-            List<EntityDataHolder> holders = FileHandler.getWorldFiles(WorldBridge.syncedData.getLevelUUID());
+            List<EntityDataHolder> holders = FileHandler.getFiles();
             List<ServerPlayerEntity> playerList = server.getPlayerManager().getPlayerList();
 
             for (ServerPlayerEntity serverPlayer : playerList) {

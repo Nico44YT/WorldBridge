@@ -12,7 +12,7 @@ import net.minecraft.registry.Registry;
 
 public class ModItemRegistry {
 
-    public static final Item SOUL_CRYSTAL = registerItem("soul_crystal", new SoulCrystal(new FabricItemSettings()));
+    public static final Item SOUL_CRYSTAL = registerItem("soul_crystal", new SoulCrystal(new FabricItemSettings().maxCount(1)));
 
     public static void register() {
         ItemGroupEvents.modifyEntriesEvent(ItemGroups.TOOLS).register(content -> {

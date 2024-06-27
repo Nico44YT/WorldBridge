@@ -31,7 +31,7 @@ public class FileHandler {
         File worldDir = getOrCreateWorldFolder(dataHolder.levelUUID);
 
         try {
-            File entityDataFile = new File(worldDir, dataHolder.entityUUID.toString());
+            File entityDataFile = new File(worldDir, dataHolder.entityUUID.toString()+".json");
 
             Gson gsonBuilder = new GsonBuilder().setPrettyPrinting().create();
             String jsonData = gsonBuilder.toJson(dataHolder);
@@ -66,6 +66,28 @@ public class FileHandler {
 
     public static EntityDataHolder readFile(UUID levelUUID, UUID entityUUID) {
         return readFile(new File(getOrCreateWorldFolder(levelUUID), entityUUID.toString()+".json"));
+    }
+
+    public static List<EntityDataHolder> getFiles() {
+        List<EntityDataHolder> dataHolderList = new ArrayList<>();
+
+        File[] folders = BASE_FOLDER_PATH.listFiles();
+        if (folders == null) {
+            return dataHolderList;
+        }
+
+        for (File folder : folders) {
+            if (folder.isDirectory()) {
+                File[] files = folder.listFiles((dir, name) -> name.endsWith(".json"));
+                if (files != null) {
+                    Arrays.stream(files)
+                            .map(FileHandler::readFile)
+                            .forEach(dataHolderList::add);
+                }
+            }
+        }
+
+        return dataHolderList;
     }
 
     public static List<EntityDataHolder> getWorldFiles(UUID levelUUID) {
