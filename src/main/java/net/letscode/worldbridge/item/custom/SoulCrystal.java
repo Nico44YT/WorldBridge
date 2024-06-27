@@ -83,7 +83,7 @@ public class SoulCrystal extends Item {
             return;
         }
 
-        tooltip.add(1, EntityDataHolder.fromNbt(stack.getNbt()).getName(world));
+        tooltip.add(1, EntityDataHolder.fromNbt(stack.getNbt()).getName(world, Colors.GRAY));
     }
 
     @Override

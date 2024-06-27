@@ -156,7 +156,7 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
 
         context.drawTexture(ENTITY_ENTRY_TEXTURE, xPos - 2, yPos - 4, 0, selectedEntity == index ? 12 : 0, 107, 12);
 
-        Text name = entityData.getName(world);
+        Text name = entityData.getName(world, Colors.WHITE);
         if(this.textRenderer.getWidth(name.getString()) > 102) {
 
         }
