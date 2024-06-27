@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "worldbridge",
+  "version": "${version}",
+  "name": "WorldBridge",
+  "description": "",
+  "authors": [
+    "Nico_44"
+  ],
+  "contact": {
+    "website": "https://modrinth.com/mod/world-bridge",
+    "repo": "https://github.com/Nico44YT/WorldBridge/"
+  },
+  "license": "GPL-3.0",
+  "icon": "assets/worldbridge/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "net.letscode.worldbridge.client.WorldBridgeClient"
+    ],
+    "main": [
+      "net.letscode.worldbridge.WorldBridge"
+    ],
+    "server": [
+      "net.letscode.worldbridge.server.WorldBridgeServer"
+    ],
+    "modmenu": [
+      "net.letscode.worldbridge.implementations.WorldBridgeModMenuImpl"
+    ]
+  },
+  "mixins": [
+    "worldbridge.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}

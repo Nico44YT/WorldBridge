@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#A#",
+        "#R#",
+        "#E#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:basalt"
+        },
+        "A": {
+            "item": "minecraft:amethyst_block"
+        },
+        "R": {
+            "item": "minecraft:respawn_anchor"
+        },
+        "E": {
+            "item": "minecraft:ender_eye"
+        }
+    },
+    "result": {
+        "item": "worldbridge:soul_explorer",
+        "count": 1
+    }
+}

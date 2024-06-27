@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "net.letscode.worldbridge.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "mixins": [
+    "MobInteractMixin"
+  ],
+  "client": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

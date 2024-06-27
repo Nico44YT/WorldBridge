@@ -1,0 +1,16 @@
+{
+  "tooltip.worldbridge.empty": "Empty",
+
+  "container.worldbridge.baby": "Baby",
+  "container.worldbridge.soul_explorer.save": "Save",
+  "container.worldbridge.soul_explorer.load": "Load",
+
+  "block.worldbridge.soul_explorer": "Soul Explorer",
+  "item.worldbridge.soul_crystal": "Soul Crystal",
+
+
+  "text.autoconfig.worldbridge.title": "WorldBridge",
+  "text.autoconfig.worldbridge.option.allow_transfer_between_worlds": "Allow Mob Transfer Between Worlds",
+  "text.autoconfig.worldbridge.option.allow_inventory_transfer": "Allow Inventory Transfer",
+  "text.autoconfig.worldbridge.option.only_uploader_access": "Only Uploader Access"
+}
