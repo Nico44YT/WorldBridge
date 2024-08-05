@@ -2,6 +2,7 @@ package net.letscode.worldbridge.screen.custom;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.letscode.worldbridge.WorldBridge;
+import net.letscode.worldbridge.WorldBridgeConfig;
 import net.letscode.worldbridge.block.custom.SoulExplorerBlockEntity;
 import net.letscode.worldbridge.client.WorldBridgeClient;
 import net.letscode.worldbridge.item.custom.SoulCrystal;
@@ -14,20 +15,26 @@ import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
 import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.nbt.NbtHelper;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
+import org.joml.Vector2i;
 
 public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler> {
     private final PlayerInventory playerInventory;
 
-    private static final Identifier TEXTURE = WorldBridge.id("textures/gui/container/soul_explorer.png");
-    private static final Identifier ENTITY_ENTRY_TEXTURE = WorldBridge.id("textures/gui/container/entity_field.png");
+    private static final Identifier GUI_TEXTURE = WorldBridge.id("textures/gui/container/soul_explorer/soul_explorer.png");
+    private static final Identifier ENTITY_ENTRY_TEXTURE = WorldBridge.id("textures/gui/container/soul_explorer/entity_field.png");
+    private static final Identifier LEVEL_ORB_TEXTURE = WorldBridge.id("textures/gui/container/soul_explorer/level.png");
 
     private ButtonWidget leftButton;
     private ButtonWidget rightButton;
@@ -43,7 +50,6 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
         super(handler, inventory, title);
         this.playerInventory = inventory;
     }
-
 
     @Override
     protected void init() {
@@ -92,14 +98,16 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
     private boolean isSaveButtonActive() {
         return this.handler.getSlot(SoulExplorerBlockEntity.OUTPUT_SLOT).getStack().isEmpty() &&
                 this.handler.getSlot(SoulExplorerBlockEntity.INPUT_SLOT).getStack().hasNbt() &&
-                this.handler.getSlot(SoulExplorerBlockEntity.INPUT_SLOT).getStack().getItem() instanceof SoulCrystal;
+                this.handler.getSlot(SoulExplorerBlockEntity.INPUT_SLOT).getStack().getItem() instanceof SoulCrystal &&
+                this.playerInventory.player.experienceLevel >= WorldBridgeClient.save_load_xp_cost;
     }
 
     private boolean isLoadButtonActive() {
         return this.handler.getSlot(SoulExplorerBlockEntity.OUTPUT_SLOT).getStack().isEmpty() &&
                 !this.handler.getSlot(SoulExplorerBlockEntity.INPUT_SLOT).getStack().hasNbt() &&
                 this.handler.getSlot(SoulExplorerBlockEntity.INPUT_SLOT).getStack().getItem() instanceof SoulCrystal &&
-                !WorldBridgeClient.entityDataHolders.isEmpty();
+                !WorldBridgeClient.entityDataHolders.isEmpty() &&
+                this.playerInventory.player.experienceLevel >= WorldBridgeClient.save_load_xp_cost;
     }
 
     @Override
@@ -117,6 +125,8 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
         for (ButtonWidget button : buttons) {
             button.render(context, mouseX, mouseY, delta);
         }
+
+        renderXPOrb(context);
     }
 
     @Override
@@ -124,7 +134,7 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
         int x = (width - backgroundWidth) / 2;
         int y = (height - backgroundHeight) / 2;
 
-        context.drawTexture(TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
+        context.drawTexture(GUI_TEXTURE, x, y, 0, 0, backgroundWidth, backgroundHeight);
 
         try {
             if (!WorldBridgeClient.entityDataHolders.isEmpty() && selectedEntity < WorldBridgeClient.entityDataHolders.size()) {
@@ -141,6 +151,21 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
         for(int entityIndex = page * 5; entityIndex < WorldBridgeClient.entityDataHolders.size() && entityIndex < (page + 1)*5; entityIndex++) {
             renderEntityEntry(context, entityIndex, world);
         }
+    }
+
+    public void renderXPOrb(DrawContext context) {
+        PlayerEntity player = playerInventory.player;
+
+        if(WorldBridgeClient.save_load_xp_cost <= 0) return;
+
+        context.drawTexture(LEVEL_ORB_TEXTURE, x+173, y+18, 0, 0, 16, 16, 16, 16);
+
+        Text toDraw = Text.empty();
+
+        if(player.experienceLevel >= WorldBridgeClient.save_load_xp_cost) toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"").withColor(Colors.YELLOW);
+        else toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"").withColor(Colors.LIGHT_RED);
+
+        context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, toDraw, x+183, y+22, Colors.WHITE);
     }
 
     public void renderEntityEntry(DrawContext context, int index, World world) {
@@ -173,6 +198,7 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
             if (mouseX >= 87 + xPos && mouseX <= 193 + xPos &&
                     mouseY >= 13 + yPos + 12 * i && mouseY <= 24 + yPos + 12 * i) {
                 selectedEntity = page * 5 + i;
+                MinecraftClient.getInstance().getSoundManager().play(PositionedSoundInstance.master(SoundEvents.UI_BUTTON_CLICK, 1.0F));
                 return true;
             }
         }

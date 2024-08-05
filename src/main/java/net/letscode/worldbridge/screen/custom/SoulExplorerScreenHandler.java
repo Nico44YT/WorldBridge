@@ -1,17 +1,26 @@
 package net.letscode.worldbridge.screen.custom;
 
+import com.mojang.datafixers.util.Pair;
+import net.letscode.worldbridge.WorldBridge;
 import net.letscode.worldbridge.block.custom.SoulExplorerBlockEntity;
+import net.letscode.worldbridge.item.ModItemRegistry;
 import net.letscode.worldbridge.screen.ModScreenRegistry;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.network.PacketByteBuf;
+import net.minecraft.screen.EnchantmentScreenHandler;
+import net.minecraft.screen.PlayerScreenHandler;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.util.Identifier;
 
 public class SoulExplorerScreenHandler extends ScreenHandler {
+    static final Identifier EMPTY_SOUL_CRYSTAL_SLOT_TEXTURE = WorldBridge.id("item/empty_slot_soul_crystal");
+
     private final Inventory inventory;
     public final SoulExplorerBlockEntity blockEntity;
 
@@ -26,7 +35,17 @@ public class SoulExplorerScreenHandler extends ScreenHandler {
         inventory.onOpen(playerInventory.player);
         this.blockEntity = (SoulExplorerBlockEntity)blockEntity;
 
-        this.addSlot(new Slot(inventory, 0, 198-40, 14));
+        this.addSlot(new Slot(inventory, 0, 198-40, 14) {
+            @Override
+            public boolean canInsert(ItemStack stack) {
+                return stack.isOf(ModItemRegistry.SOUL_CRYSTAL);
+            }
+
+            @Override
+            public Pair<Identifier, Identifier> getBackgroundSprite() {
+                return Pair.of(PlayerScreenHandler.BLOCK_ATLAS_TEXTURE, SoulExplorerScreenHandler.EMPTY_SOUL_CRYSTAL_SLOT_TEXTURE);
+            }
+        });
         this.addSlot(new Slot(inventory, 1, 233-40, 14));
         this.addPlayerInventory(playerInventory);
         this.addPlayerHotbar(playerInventory);
@@ -36,7 +55,7 @@ public class SoulExplorerScreenHandler extends ScreenHandler {
     public ItemStack quickMove(PlayerEntity player, int invSlot) {
         ItemStack newStack = ItemStack.EMPTY;
         Slot slot = this.slots.get(invSlot);
-        if (slot != null && slot.hasStack()) {
+        if(slot.hasStack()) {
             ItemStack originalStack = slot.getStack();
             newStack = originalStack.copy();
             if (invSlot < this.inventory.size()) {

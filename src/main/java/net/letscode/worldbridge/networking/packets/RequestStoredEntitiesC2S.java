@@ -16,7 +16,6 @@ import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 
 import java.util.List;
-import java.util.UUID;
 
 public record RequestStoredEntitiesC2S() implements FabricPacket, PacketReceiver {
     public static final PacketType<RequestStoredEntitiesC2S> TYPE = PacketType.create(WorldBridgePackets.REQUEST_STORED_ENTITIES, RequestStoredEntitiesC2S::new);
@@ -50,6 +49,9 @@ public record RequestStoredEntitiesC2S() implements FabricPacket, PacketReceiver
     }
 
     private static boolean isValidHolder(EntityDataHolder holder, ServerPlayerEntity serverPlayer) {
+        if(WorldBridgeConfig.getConfigHolder().blacklisted_entities.contains(holder.getEntityType().toString())) {
+            return false;
+        }
         if(holder.delete) {
             return false;
         }
@@ -59,6 +61,7 @@ public record RequestStoredEntitiesC2S() implements FabricPacket, PacketReceiver
         if(WorldBridgeConfig.getConfigHolder().allow_transfer_between_worlds) {
             return true;
         }
+
         return holder.levelUUID.equals(WorldBridge.syncedData.getLevelUUID());
     }
 

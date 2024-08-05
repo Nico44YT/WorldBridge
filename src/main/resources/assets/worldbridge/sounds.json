@@ -1,0 +1,8 @@
+{
+  "release": {
+    "subtitle": "subtitles.worldbridge.soul_crystal.release",
+    "sounds": [
+      "worldbridge:item/soul_crystal/release"
+    ]
+  }
+}

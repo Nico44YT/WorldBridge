@@ -1,0 +1,26 @@
+{
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "#R#",
+        "#W#",
+        "#G#"
+    ],
+    "key": {
+        "#": {
+            "item": "minecraft:blackstone"
+        },
+        "R": {
+            "item": "minecraft:recovery_compass"
+        },
+        "W": {
+            "item": "worldbridge:soul_explorer"
+        },
+        "G": {
+            "item": "minecraft:ghast_tear"
+        }
+    },
+    "result": {
+        "item": "worldbridge:soul_tablet",
+        "count": 1
+    }
+}

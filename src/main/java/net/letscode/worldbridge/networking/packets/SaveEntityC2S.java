@@ -3,6 +3,7 @@ package net.letscode.worldbridge.networking.packets;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
+import net.letscode.worldbridge.WorldBridgeConfig;
 import net.letscode.worldbridge.block.custom.SoulExplorerBlock;
 import net.letscode.worldbridge.block.custom.SoulExplorerBlockEntity;
 import net.letscode.worldbridge.item.ModItemRegistry;
@@ -61,6 +62,8 @@ public record SaveEntityC2S(BlockPos blockPos) implements FabricPacket, PacketRe
             blockEntity.setStack(SoulExplorerBlockEntity.INPUT_SLOT, ItemStack.EMPTY);
             blockEntity.setStack(SoulExplorerBlockEntity.OUTPUT_SLOT, new ItemStack(ModItemRegistry.SOUL_CRYSTAL));
             blockEntity.markDirty();
+
+            player.addExperienceLevels(-WorldBridgeConfig.getConfigHolder().save_load_xp_cost);
         });
     }
 }

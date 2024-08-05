@@ -14,6 +14,7 @@ import net.letscode.worldbridge.loottable.ModLoottableRegistry;
 import net.letscode.worldbridge.networking.WorldBridgePackets;
 import net.letscode.worldbridge.networking.packets.SyncPersistentDataS2C;
 import net.letscode.worldbridge.screen.ModScreenRegistry;
+import net.letscode.worldbridge.sound.ModSoundRegistry;
 import net.letscode.worldbridge.util.FileHandler;
 import net.letscode.worldbridge.util.SyncedData;
 import net.letscode.worldbridge.world.PersistentData;
@@ -37,6 +38,7 @@ public class WorldBridge implements ModInitializer {
         ModBlockRegistry.register();
         ModScreenRegistry.register();
         ModLoottableRegistry.register();
+        ModSoundRegistry.register();
 
         ServerLifecycleEvents.SERVER_STARTED.register(server -> {
             syncedData = new SyncedData(PersistentData.getServerState(server).writeNbt(new NbtCompound()));
@@ -55,5 +57,4 @@ public class WorldBridge implements ModInitializer {
     public static Identifier id(String name) {
         return new Identifier(MOD_ID, name);
     }
-
 }

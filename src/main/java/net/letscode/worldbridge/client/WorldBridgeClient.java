@@ -1,8 +1,6 @@
 package net.letscode.worldbridge.client;
 
 import net.fabricmc.api.ClientModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
-import net.letscode.worldbridge.commands.WorldBridgeCommand;
 import net.letscode.worldbridge.networking.WorldBridgePackets;
 import net.letscode.worldbridge.screen.ModScreenRegistry;
 import net.letscode.worldbridge.screen.custom.SoulExplorerScreen;
@@ -15,10 +13,11 @@ import java.util.List;
 public class WorldBridgeClient implements ClientModInitializer {
 
     public static List<EntityDataHolder> entityDataHolders = new ArrayList<>();
+    public static int save_load_xp_cost = 0;
 
     @Override
     public void onInitializeClient() {
-        ClientCommandRegistrationCallback.EVENT.register(WorldBridgeCommand::registerClient);
+        //ClientCommandRegistrationCallback.EVENT.register(WorldBridgeCommand::registerClient);
 
         WorldBridgePackets.registerS2CPacketsClient();
 

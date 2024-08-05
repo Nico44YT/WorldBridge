@@ -2,6 +2,8 @@ package net.letscode.worldbridge.item.custom;
 
 import net.letscode.worldbridge.WorldBridge;
 import net.letscode.worldbridge.WorldBridgeConfig;
+import net.letscode.worldbridge.item.ModItemRegistry;
+import net.letscode.worldbridge.sound.ModSoundRegistry;
 import net.letscode.worldbridge.util.EntityDataHolder;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.Entity;
@@ -13,15 +15,20 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
+import net.minecraft.particle.ParticleTypes;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
+import java.util.UUID;
 
 public class SoulCrystal extends Item {
     public SoulCrystal(Settings settings) {
@@ -35,6 +42,11 @@ public class SoulCrystal extends Item {
 
         if(world.isClient) return ActionResult.CONSUME;
         if(entity.isPlayer() || stack.hasNbt()) return ActionResult.FAIL;
+
+        if(!isAllowedEntity(entity)) {
+            player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_capture", entity.getName()).withColor(Colors.LIGHT_RED));
+            return ActionResult.FAIL;
+        }
 
         NbtCompound entityNbt = entity.writeNbt(new NbtCompound());
         if(entityNbt.contains("Items") && !WorldBridgeConfig.getConfigHolder().allow_inventory_transfer) {
@@ -62,16 +74,38 @@ public class SoulCrystal extends Item {
     }
 
     public ActionResult useOnBlock(World world, ItemStack stack, PlayerEntity player, Hand hand, Vec3d hitPos) {
-        if(world.isClient) return ActionResult.CONSUME;
-        if(!stack.hasNbt()) return ActionResult.FAIL;
+        if(world.isClient) {
 
-        EntityDataHolder dataHolder = EntityDataHolder.fromNbt(stack.getNbt());
-        Entity newEntity = dataHolder.createEntity(world);
-        newEntity.setPosition(hitPos);
+            try {
+                if(!EntityDataHolder.isValidNbt(stack.getNbt())) return ActionResult.FAIL;
+                Random random = Random.create();
 
-        world.spawnEntity(newEntity);
+                for(int i = 0;i<25;i++){
+                    world.addParticle(ParticleTypes.POOF, hitPos.x, hitPos.y, hitPos.z, random.nextBetween(-5, 5)/40f, random.nextBetween(0, 5)/40f, random.nextBetween(-5, 5)/40f);
+                }
 
-        player.getStackInHand(hand).setNbt(new NbtCompound());
+            } catch (Exception ignore) {}
+            return ActionResult.CONSUME;
+        }
+
+        try{
+            if(!EntityDataHolder.isValidNbt(stack.getNbt())) return ActionResult.FAIL;
+
+            EntityDataHolder dataHolder = EntityDataHolder.fromNbt(stack.getNbt());
+            Entity newEntity = dataHolder.createEntity(world);
+            newEntity.setPosition(hitPos);
+
+            if(!isAllowedEntity((LivingEntity)newEntity)) {
+                player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_release", newEntity.getName()).withColor(Colors.LIGHT_RED));
+                return ActionResult.FAIL;
+            }
+
+            world.spawnEntity(newEntity);
+
+            world.playSound(null, new BlockPos((int)hitPos.x, (int)hitPos.y, (int)hitPos.z), ModSoundRegistry.RELEASE_SOUND, SoundCategory.PLAYERS, 1, 1);
+
+            player.getStackInHand(hand).setNbt(new NbtCompound());
+        }catch (Exception ignore){}
 
         return ActionResult.SUCCESS;
     }
@@ -83,7 +117,13 @@ public class SoulCrystal extends Item {
             return;
         }
 
-        tooltip.add(1, EntityDataHolder.fromNbt(stack.getNbt()).getName(world, Colors.GRAY));
+        EntityDataHolder entityDataHolder = EntityDataHolder.fromNbt(stack.getNbt());
+
+        tooltip.add(1, entityDataHolder.getName(world, Colors.GRAY));
+        LivingEntity entity = (LivingEntity)EntityDataHolder.fromNbt(stack.getNbt()).getEntityType().create(world);
+        if(!isAllowedEntity(entity)) {
+            tooltip.add(2, Text.translatable("tooltip.worldbridge.disallowed_entity").withColor(Colors.LIGHT_RED));
+        }
     }
 
     @Override
@@ -94,6 +134,11 @@ public class SoulCrystal extends Item {
     @Override
     public boolean isEnchantable(ItemStack stack) {
         return false;
+    }
+    private boolean isAllowedEntity(LivingEntity entity) {
+        if(WorldBridgeConfig.getConfigHolder().blacklisted_entities.contains(entity.getType().toString())) return false;
+
+        return true;
     }
 }
 

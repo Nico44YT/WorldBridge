@@ -2,6 +2,7 @@ package net.letscode.worldbridge.util.nbt;
 
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtElement;
+import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.util.math.Vec3i;
 
@@ -15,8 +16,15 @@ public class NbtCompoundBuilder {
         return new NbtCompoundBuilder();
     }
 
+    public static NbtCompoundBuilder create(NbtCompound nbtCompound) {
+        return new NbtCompoundBuilder(nbtCompound);
+    }
+
     protected NbtCompoundBuilder() {
         this.nbtCompound = new NbtCompound();
+    }
+    protected NbtCompoundBuilder(NbtCompound nbtCompound) {
+        this.nbtCompound = nbtCompound;
     }
 
     //region// * NbtCompound put method wrappers * //
@@ -153,13 +161,22 @@ public class NbtCompoundBuilder {
         return this;
     }
 
+    public NbtCompoundBuilder putBlockPos(String key, BlockPos value) {
+        NbtCompound nbt = NbtCompoundBuilder.create()
+                .putString("type", "blockpos")
+                .putInt("x", value.getX())
+                .putInt("y", value.getY())
+                .putInt("z", value.getZ())
+                .build();
+
+        this.nbtCompound.put(key, nbt);
+
+        return this;
+    }
+
     //endregion
 
     public NbtCompound build() {
         return this.nbtCompound;
-    }
-
-    public AdvancedNbtCompound asAdvancedNbtCompound() {
-        return (AdvancedNbtCompound)this.build();
     }
 }

@@ -2,22 +2,28 @@ package net.letscode.worldbridge.block.custom;
 
 import com.mojang.serialization.MapCodec;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.letscode.worldbridge.WorldBridgeConfig;
 import net.letscode.worldbridge.networking.packets.RequestStoredEntitiesC2S;
 import net.minecraft.block.BlockEntityProvider;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.screen.NamedScreenHandlerFactory;
-import net.minecraft.server.MinecraftServer;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
+import net.minecraft.util.Colors;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.List;
 
 public class SoulExplorerBlock extends BlockWithEntity implements BlockEntityProvider {
     public SoulExplorerBlock(Settings settings) {
@@ -58,9 +64,16 @@ public class SoulExplorerBlock extends BlockWithEntity implements BlockEntityPro
             return ActionResult.CONSUME;
         }
 
+        if(!WorldBridgeConfig.getConfigHolder().enable_soul_explorer) return ActionResult.PASS;
+
         NamedScreenHandlerFactory screenHandlerFactory = (SoulExplorerBlockEntity)world.getBlockEntity(pos);
         if(screenHandlerFactory != null) player.openHandledScreen(screenHandlerFactory);
 
         return ActionResult.SUCCESS;
+    }
+
+    @Override
+    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+        if(!WorldBridgeConfig.getConfigHolder().enable_soul_explorer) tooltip.add(1, Text.translatable("tooltip.worldbridge.disabled_feature").withColor(Colors.LIGHT_RED));
     }
 }

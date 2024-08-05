@@ -72,11 +72,19 @@ public class EntityDataHolder {
 
         nbt.putUuid("playerUUID", playerUUID);
         nbt.putUuid("entityUUID", entityUUID);
-        nbt.putString("entityType",entityType);
+        nbt.putString("entityType", entityType);
         nbt.putString("nbtData", nbtData);
         nbt.putUuid("levelUUID", levelUUID);
 
         return nbt;
+    }
+
+    public static boolean isValidNbt(@NotNull NbtCompound nbt) {
+        return nbt.containsUuid("playerUUID") &&
+               nbt.containsUuid("entityUUID") &&
+               nbt.contains("entityType") &&
+               nbt.contains("nbtData") &&
+               nbt.containsUuid("levelUUID");
     }
 
     public static EntityDataHolder fromNbt(@NotNull NbtCompound nbt) {

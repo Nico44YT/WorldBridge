@@ -3,6 +3,7 @@ package net.letscode.worldbridge.networking.packets;
 import net.fabricmc.fabric.api.networking.v1.FabricPacket;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;
 import net.fabricmc.fabric.api.networking.v1.PacketType;
+import net.letscode.worldbridge.WorldBridgeConfig;
 import net.letscode.worldbridge.client.WorldBridgeClient;
 import net.letscode.worldbridge.networking.PacketReceiver;
 import net.letscode.worldbridge.networking.WorldBridgePackets;
@@ -28,6 +29,8 @@ public record SendStoredEntitiesS2C(List<EntityDataHolder> dataHolderList) imple
         for(EntityDataHolder holder : dataHolderList) {
             buf.writeNbt(holder.toNbt());
         }
+
+        buf.writeInt(WorldBridgeConfig.getConfigHolder().save_load_xp_cost);
     }
 
     @Override
@@ -48,9 +51,12 @@ public record SendStoredEntitiesS2C(List<EntityDataHolder> dataHolderList) imple
 
     public static void receiveClient(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender packetSender) {
         List<EntityDataHolder> holders = readFromBuffer(buf);
+        int xp_cost = buf.readInt();
+
         client.execute(() -> {
             WorldBridgeClient.entityDataHolders.clear();
             WorldBridgeClient.entityDataHolders = holders;
+            WorldBridgeClient.save_load_xp_cost = xp_cost;
         });
     }
 }

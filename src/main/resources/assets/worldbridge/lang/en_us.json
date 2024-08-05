@@ -1,5 +1,8 @@
 {
   "tooltip.worldbridge.empty": "Empty",
+  "tooltip.worldbridge.disallowed_entity": "Disallowed Entity",
+  "tooltip.worldbridge.disabled_feature": "Disabled Feature",
+  "tooltip.worldbridge.linked": "Linked: %s",
 
   "container.worldbridge.baby": "Baby",
   "container.worldbridge.soul_explorer.save": "Save",
@@ -7,10 +10,22 @@
 
   "block.worldbridge.soul_explorer": "Soul Explorer",
   "item.worldbridge.soul_crystal": "Soul Crystal",
+  "item.worldbridge.soul_tablet": "Soul Tablet",
 
+  "command.worldbridge.entitytype": "%s is of entity type %s",
+
+  "message.worldbridge.soul_crystal.disallowed_capture": "%s can't be captured",
+  "message.worldbridge.soul_crystal.disallowed_release": "%s can't be released",
+
+  "subtitles.worldbridge.soul_crystal.release": "Creature released",
 
   "text.autoconfig.worldbridge.title": "WorldBridge",
+  "text.autoconfig.worldbridge.option.enable_soul_explorer": "Enable Soul Explorer",
+  "text.autoconfig.worldbridge.option.enable_soul_tablet": "Enable Soul Tablet",
+  "text.autoconfig.worldbridge.option.soul_tablet_durability": "Soul Tablet Durability",
+  "text.autoconfig.worldbridge.option.save_load_xp_cost": "XP cost of saving and loading",
   "text.autoconfig.worldbridge.option.allow_transfer_between_worlds": "Allow Mob Transfer Between Worlds",
   "text.autoconfig.worldbridge.option.allow_inventory_transfer": "Allow Inventory Transfer",
-  "text.autoconfig.worldbridge.option.only_uploader_access": "Only Uploader Access"
+  "text.autoconfig.worldbridge.option.only_uploader_access": "Only Uploader Access",
+  "text.autoconfig.worldbridge.option.blacklisted_entities": "Blacklisted Entities"
 }
