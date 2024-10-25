@@ -61,4 +61,9 @@ public class SoulExplorerBlockEntity extends BlockEntity implements ExtendedScre
     public ScreenHandler createMenu(int syncId, PlayerInventory playerInventory, PlayerEntity player) {
         return new SoulExplorerScreenHandler(syncId, playerInventory, this);
     }
+
+    @Override
+    public Object getScreenOpeningData(ServerPlayerEntity player) {
+        return null;
+    }
 }

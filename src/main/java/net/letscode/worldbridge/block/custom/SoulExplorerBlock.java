@@ -9,9 +9,10 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.entity.BlockEntity;
-import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.screen.NamedScreenHandlerFactory;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
@@ -58,7 +59,7 @@ public class SoulExplorerBlock extends BlockWithEntity implements BlockEntityPro
     }
 
     @Override
-    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockHitResult hit) {
+    public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, BlockHitResult hit) {
         if(world.isClient) {
             ClientPlayNetworking.send(new RequestStoredEntitiesC2S());
             return ActionResult.CONSUME;
@@ -73,7 +74,7 @@ public class SoulExplorerBlock extends BlockWithEntity implements BlockEntityPro
     }
 
     @Override
-    public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
+    public void appendTooltip(ItemStack stack, Item.TooltipContext context, List<Text> tooltip, TooltipType options) {
         if(!WorldBridgeConfig.getConfigHolder().enable_soul_explorer) tooltip.add(1, Text.translatable("tooltip.worldbridge.disabled_feature").withColor(Colors.LIGHT_RED));
     }
 }
