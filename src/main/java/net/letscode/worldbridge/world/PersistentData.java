@@ -1,5 +1,6 @@
 package net.letscode.worldbridge.world;
 
+import com.mojang.datafixers.types.Type;
 import net.letscode.worldbridge.WorldBridge;
 import net.letscode.worldbridge.util.nbt.NbtCompoundBuilder;
 import net.minecraft.nbt.NbtCompound;
@@ -10,8 +11,6 @@ import net.minecraft.world.PersistentStateManager;
 import java.util.UUID;
 
 public class PersistentData extends PersistentState {
-    private static Type<PersistentData> type = new Type<>(PersistentData::new, PersistentData::createFromNbt, null);
-
     public UUID levelUUID = UUID.randomUUID();
 
     @Override
@@ -30,7 +29,7 @@ public class PersistentData extends PersistentState {
     public static PersistentData getServerState(MinecraftServer server) {
         PersistentStateManager persistentStateManager = server.getOverworld().getPersistentStateManager();
 
-        PersistentData state = persistentStateManager.getOrCreate(type, WorldBridge.MOD_ID);
+        PersistentData state = persistentStateManager.getOrCreate(PersistentData::createFromNbt, PersistentData::new, WorldBridge.MOD_ID);
 
         state.markDirty();
 

@@ -23,16 +23,12 @@ import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.text.Style;
 import java.util.List;
 
 public class SoulExplorerBlock extends BlockWithEntity implements BlockEntityProvider {
     public SoulExplorerBlock(Settings settings) {
         super(settings);
-    }
-
-    @Override
-    protected MapCodec<? extends BlockWithEntity> getCodec() {
-        return null;
     }
 
     @Override
@@ -74,6 +70,7 @@ public class SoulExplorerBlock extends BlockWithEntity implements BlockEntityPro
 
     @Override
     public void appendTooltip(ItemStack stack, @Nullable BlockView world, List<Text> tooltip, TooltipContext options) {
-        if(!WorldBridgeConfig.getConfigHolder().enable_soul_explorer) tooltip.add(1, Text.translatable("tooltip.worldbridge.disabled_feature").withColor(Colors.LIGHT_RED));
+        //TODO Make red
+        if(!WorldBridgeConfig.getConfigHolder().enable_soul_explorer) tooltip.add(1, Text.translatable("tooltip.worldbridge.disabled_feature"));
     }
 }

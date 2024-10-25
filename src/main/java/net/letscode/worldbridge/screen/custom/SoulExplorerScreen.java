@@ -117,7 +117,7 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
         saveButton.active = isSaveButtonActive();
         loadButton.active = isLoadButtonActive();
 
-        renderBackground(context, mouseX, mouseY, delta);
+        renderBackground(context);
         super.render(context, mouseX, mouseY, delta);
         renderEntityEntries(context);
         drawMouseoverTooltip(context, mouseX, mouseY);
@@ -141,7 +141,8 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
                 EntityDataHolder dataHolder = WorldBridgeClient.entityDataHolders.get(selectedEntity);
                 LivingEntity entity = (LivingEntity) dataHolder.createEntity(playerInventory.player.getWorld());
                 entity.readNbt(dataHolder.getEntityNBT());
-                InventoryScreen.drawEntity(context, x + 6, y + 6, x + 76, y + 77, 20, 0.25F, mouseX, mouseY, entity);
+                //InventoryScreen.drawEntity(context, x + 6, y + 6, x + 76, y + 77, 20, 0.25F, mouseX, mouseY, entity);
+                InventoryScreen.drawEntity(context, x + 36, y + 57, 35,(float)(x + 51) - mouseX, (float)(y + 75 - 50) - mouseY, entity);
             }
         } catch (Exception ignore) {}
     }
@@ -162,8 +163,10 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
 
         Text toDraw = Text.empty();
 
-        if(player.experienceLevel >= WorldBridgeClient.save_load_xp_cost) toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"").withColor(Colors.YELLOW);
-        else toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"").withColor(Colors.LIGHT_RED);
+        //.withColor(Colors.YELLOW)
+        if(player.experienceLevel >= WorldBridgeClient.save_load_xp_cost) toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"");
+        //.withColor(Colors.LIGHT_RED)
+        else toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"");
 
         context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, toDraw, x+183, y+22, Colors.WHITE);
     }

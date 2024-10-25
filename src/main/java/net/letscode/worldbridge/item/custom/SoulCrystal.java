@@ -44,7 +44,8 @@ public class SoulCrystal extends Item {
         if(entity.isPlayer() || stack.hasNbt()) return ActionResult.FAIL;
 
         if(!isAllowedEntity(entity)) {
-            player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_capture", entity.getName()).withColor(Colors.LIGHT_RED));
+            //.withColor(Colors.LIGHT_RED)
+            player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_capture", entity.getName()));
             return ActionResult.FAIL;
         }
 
@@ -96,7 +97,8 @@ public class SoulCrystal extends Item {
             newEntity.setPosition(hitPos);
 
             if(!isAllowedEntity((LivingEntity)newEntity)) {
-                player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_release", newEntity.getName()).withColor(Colors.LIGHT_RED));
+                //.withColor(Colors.LIGHT_RED)
+                player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_release", newEntity.getName()));
                 return ActionResult.FAIL;
             }
 
@@ -113,7 +115,8 @@ public class SoulCrystal extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if(!stack.hasNbt()) {
-            tooltip.add(1, Text.translatable("tooltip.worldbridge.empty").withColor(Colors.GRAY));
+            //.withColor(Colors.GRAY)
+            tooltip.add(1, Text.translatable("tooltip.worldbridge.empty"));
             return;
         }
 
@@ -122,7 +125,8 @@ public class SoulCrystal extends Item {
         tooltip.add(1, entityDataHolder.getName(world, Colors.GRAY));
         LivingEntity entity = (LivingEntity)EntityDataHolder.fromNbt(stack.getNbt()).getEntityType().create(world);
         if(!isAllowedEntity(entity)) {
-            tooltip.add(2, Text.translatable("tooltip.worldbridge.disallowed_entity").withColor(Colors.LIGHT_RED));
+            //.withColor(Colors.LIGHT_RED)
+            tooltip.add(2, Text.translatable("tooltip.worldbridge.disallowed_entity"));
         }
     }
 

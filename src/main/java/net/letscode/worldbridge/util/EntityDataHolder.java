@@ -130,13 +130,16 @@ public class EntityDataHolder {
         Entity newEntity = createEntity(world);
 
         if(newEntity.hasCustomName()) {
-            return Text.empty().append(newEntity.getCustomName()).withColor(color).styled(style -> style.withItalic(true));
+            //TODO .withColor(color).styled(style -> style.withItalic(true)
+            return Text.empty().append(newEntity.getCustomName());
         }
 
         if(newEntity.writeNbt(new NbtCompound()).getInt("Age") < 0) {
-            return Text.empty().append(Text.translatable("container.worldbridge.baby")).append(" ").append(newEntity.getName()).withColor(color);
+            //.withColor(color)
+            return Text.empty().append(Text.translatable("container.worldbridge.baby")).append(" ").append(newEntity.getName());
         } else {
-            return Text.empty().append(newEntity.getName()).withColor(color);
+            //.withColor(color);
+            return Text.empty().append(newEntity.getName());
         }
     }
 }

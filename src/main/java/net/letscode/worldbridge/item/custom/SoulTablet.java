@@ -76,23 +76,27 @@ public class SoulTablet extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if(!WorldBridgeConfig.getConfigHolder().enable_soul_tablet) {
-            tooltip.add(1, Text.translatable("tooltip.worldbridge.disabled_feature").withColor(Colors.LIGHT_RED));
+            //.withColor(Colors.LIGHT_RED)
+            tooltip.add(1, Text.translatable("tooltip.worldbridge.disabled_feature"));
             return;
         }
 
         if(!stack.hasNbt()) {
-            tooltip.add(1, Text.keybind("key.sneak").append(" + ").append(Text.keybind("key.use")).append(" -> ").append(Text.translatable("block.worldbridge.soul_explorer")).withColor(Colors.LIGHT_GRAY));
+            //.withColor(Colors.LIGHT_GRAY)
+            tooltip.add(1, Text.keybind("key.sneak").append(" + ").append(Text.keybind("key.use")).append(" -> ").append(Text.translatable("block.worldbridge.soul_explorer")));
             return;
         }
 
         if(!stack.getNbt().contains("linked_pos")) {
-            tooltip.add(1, Text.keybind("key.sneak").append(" + ").append(Text.keybind("key.use")).append(" -> ").append(Text.translatable("block.worldbridge.soul_explorer")).withColor(Colors.LIGHT_GRAY));
+            //.withColor(Colors.LIGHT_GRAY)
+            tooltip.add(1, Text.keybind("key.sneak").append(" + ").append(Text.keybind("key.use")).append(" -> ").append(Text.translatable("block.worldbridge.soul_explorer")));
             return;
         }
 
         if(stack.hasNbt()) {
             BlockPos pos = (NbtCompoundReader.create(stack.getNbt()).getBlockPos("linked_pos"));
-            tooltip.add(1, Text.translatable("tooltip.worldbridge.linked", pos.getX() + ", " + pos.getY() + ", " + pos.getZ()).withColor(Colors.LIGHT_GRAY));
+            //.withColor(Colors.LIGHT_GRAY)
+            tooltip.add(1, Text.translatable("tooltip.worldbridge.linked", pos.getX() + ", " + pos.getY() + ", " + pos.getZ()));
         }
     }
 

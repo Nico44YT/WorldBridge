@@ -57,7 +57,9 @@ public class WorldBridgeCommand {
     private static int getEntityType(CommandContext<ServerCommandSource> context) {
         try{
             Entity en = RegistryEntryArgumentType.getSummonableEntityType(context, "entity").value().create(context.getSource().getWorld());
-            context.getSource().getPlayer().sendMessage(Text.translatable("command.worldbridge.entitytype", Text.empty().append(en.getName()).withColor(Colors.LIGHT_GRAY), Text.literal(en.getType().toString()).withColor(Colors.LIGHT_GRAY)));
+            //.withColor(Colors.LIGHT_GRAY)
+            //.withColor(Colors.LIGHT_GRAY)
+            context.getSource().getPlayer().sendMessage(Text.translatable("command.worldbridge.entitytype", Text.empty().append(en.getName()), Text.literal(en.getType().toString())));
         } catch (Exception ignore) {
             ignore.printStackTrace();
             return 0;

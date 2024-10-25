@@ -6,7 +6,6 @@ import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.letscode.worldbridge.WorldBridge;
 import net.letscode.worldbridge.networking.packets.*;
-import net.minecraft.client.session.report.ReporterEnvironment;
 import net.minecraft.util.Identifier;
 
 public class WorldBridgePackets {
