@@ -11,7 +11,7 @@ public class NbtCompoundReader {
     public static NbtCompoundReader create(NbtCompound nbtCompound) {
         return new NbtCompoundReader(nbtCompound);
     }
-    protected NbtCompoundReader(NbtCompound nbtCompound) {
+    public NbtCompoundReader(NbtCompound nbtCompound) {
         this.nbtCompound = nbtCompound;
     }
 

@@ -9,6 +9,7 @@ import net.letscode.worldbridge.item.custom.SoulCrystal;
 import net.letscode.worldbridge.networking.packets.LoadEntityC2S;
 import net.letscode.worldbridge.networking.packets.RequestStoredEntitiesC2S;
 import net.letscode.worldbridge.networking.packets.SaveEntityC2S;
+import net.letscode.worldbridge.util.CustomInventoryScreen;
 import net.letscode.worldbridge.util.EntityDataHolder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
@@ -141,8 +142,7 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
                 EntityDataHolder dataHolder = WorldBridgeClient.entityDataHolders.get(selectedEntity);
                 LivingEntity entity = (LivingEntity) dataHolder.createEntity(playerInventory.player.getWorld());
                 entity.readNbt(dataHolder.getEntityNBT());
-                //InventoryScreen.drawEntity(context, x + 6, y + 6, x + 76, y + 77, 20, 0.25F, mouseX, mouseY, entity);
-                InventoryScreen.drawEntity(context, x + 36, y + 57, 35,(float)(x + 51) - mouseX, (float)(y + 75 - 50) - mouseY, entity);
+                CustomInventoryScreen.drawEntity(context, x + 6, y + 6, x + 76, y + 77, 20, 0.25F, mouseX, mouseY, entity);
             }
         } catch (Exception ignore) {}
     }

@@ -7,8 +7,10 @@ import net.letscode.worldbridge.WorldBridge;
 import net.letscode.worldbridge.networking.PacketReceiver;
 import net.letscode.worldbridge.networking.WorldBridgePackets;
 import net.letscode.worldbridge.util.SyncedData;
+import net.letscode.worldbridge.util.nbt.NbtCompoundReader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.PacketByteBuf;
 
 public record SyncPersistentDataS2C(SyncedData data) implements FabricPacket, PacketReceiver {
@@ -29,6 +31,7 @@ public record SyncPersistentDataS2C(SyncedData data) implements FabricPacket, Pa
     }
 
     public static void receiveClient(MinecraftClient client, ClientPlayNetworkHandler handler, PacketByteBuf buf, PacketSender packetSender) {
-        client.execute(() -> WorldBridge.syncedData = new SyncedData(buf.readNbt()));
+        NbtCompound nbtCompound = buf.readNbt();
+        client.execute(() -> WorldBridge.syncedData = new SyncedData(nbtCompound));
     }
 }
