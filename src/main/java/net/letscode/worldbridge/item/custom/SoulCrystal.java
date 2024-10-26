@@ -17,6 +17,7 @@ import net.minecraft.nbt.NbtElement;
 import net.minecraft.nbt.NbtList;
 import net.minecraft.particle.ParticleTypes;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Colors;
@@ -45,7 +46,7 @@ public class SoulCrystal extends Item {
 
         if(!isAllowedEntity(entity)) {
             //.withColor(Colors.LIGHT_RED)
-            player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_capture", entity.getName()));
+            player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_capture", entity.getName()).setStyle(Style.EMPTY.withColor(0xFFFF5555)));
             return ActionResult.FAIL;
         }
 
@@ -98,7 +99,7 @@ public class SoulCrystal extends Item {
 
             if(!isAllowedEntity((LivingEntity)newEntity)) {
                 //.withColor(Colors.LIGHT_RED)
-                player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_release", newEntity.getName()));
+                player.sendMessage(Text.translatable("message.worldbridge.soul_crystal.disallowed_release", newEntity.getName()).setStyle(Style.EMPTY.withColor(0xFFFF5555)));
                 return ActionResult.FAIL;
             }
 
@@ -116,7 +117,7 @@ public class SoulCrystal extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if(!stack.hasNbt()) {
             //.withColor(Colors.GRAY)
-            tooltip.add(1, Text.translatable("tooltip.worldbridge.empty"));
+            tooltip.add(1, Text.translatable("tooltip.worldbridge.empty").setStyle(Style.EMPTY.withColor(0xFFAAAAAA)));
             return;
         }
 
@@ -126,7 +127,7 @@ public class SoulCrystal extends Item {
         LivingEntity entity = (LivingEntity)EntityDataHolder.fromNbt(stack.getNbt()).getEntityType().create(world);
         if(!isAllowedEntity(entity)) {
             //.withColor(Colors.LIGHT_RED)
-            tooltip.add(2, Text.translatable("tooltip.worldbridge.disallowed_entity"));
+            tooltip.add(2, Text.translatable("tooltip.worldbridge.disallowed_entity").setStyle(Style.EMPTY.withColor(0xAAFF5555)));
         }
     }
 

@@ -18,6 +18,7 @@ import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.Items;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Colors;
@@ -77,26 +78,26 @@ public class SoulTablet extends Item {
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         if(!WorldBridgeConfig.getConfigHolder().enable_soul_tablet) {
             //.withColor(Colors.LIGHT_RED)
-            tooltip.add(1, Text.translatable("tooltip.worldbridge.disabled_feature"));
+            tooltip.add(1, Text.translatable("tooltip.worldbridge.disabled_feature").setStyle(Style.EMPTY.withColor(0xFFFF5555)));
             return;
         }
 
         if(!stack.hasNbt()) {
             //.withColor(Colors.LIGHT_GRAY)
-            tooltip.add(1, Text.keybind("key.sneak").append(" + ").append(Text.keybind("key.use")).append(" -> ").append(Text.translatable("block.worldbridge.soul_explorer")));
+            tooltip.add(1, Text.keybind("key.sneak").append(" + ").append(Text.keybind("key.use")).append(" -> ").append(Text.translatable("block.worldbridge.soul_explorer").setStyle(Style.EMPTY.withColor(0xFFAAAAAA))));
             return;
         }
 
         if(!stack.getNbt().contains("linked_pos")) {
             //.withColor(Colors.LIGHT_GRAY)
-            tooltip.add(1, Text.keybind("key.sneak").append(" + ").append(Text.keybind("key.use")).append(" -> ").append(Text.translatable("block.worldbridge.soul_explorer")));
+            tooltip.add(1, Text.keybind("key.sneak").append(" + ").append(Text.keybind("key.use")).append(" -> ").append(Text.translatable("block.worldbridge.soul_explorer").setStyle(Style.EMPTY.withColor(0xFFAAAAAA))));
             return;
         }
 
         if(stack.hasNbt()) {
             BlockPos pos = (NbtCompoundReader.create(stack.getNbt()).getBlockPos("linked_pos"));
             //.withColor(Colors.LIGHT_GRAY)
-            tooltip.add(1, Text.translatable("tooltip.worldbridge.linked", pos.getX() + ", " + pos.getY() + ", " + pos.getZ()));
+            tooltip.add(1, Text.translatable("tooltip.worldbridge.linked", pos.getX() + ", " + pos.getY() + ", " + pos.getZ()).setStyle(Style.EMPTY.withColor(0xFFAAAAAA)));
         }
     }
 

@@ -2,7 +2,6 @@ package net.letscode.worldbridge.screen.custom;
 
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayNetworking;
 import net.letscode.worldbridge.WorldBridge;
-import net.letscode.worldbridge.WorldBridgeConfig;
 import net.letscode.worldbridge.block.custom.SoulExplorerBlockEntity;
 import net.letscode.worldbridge.client.WorldBridgeClient;
 import net.letscode.worldbridge.item.custom.SoulCrystal;
@@ -14,21 +13,18 @@ import net.letscode.worldbridge.util.EntityDataHolder;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.ingame.HandledScreen;
-import net.minecraft.client.gui.screen.ingame.InventoryScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.sound.PositionedSoundInstance;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.sound.SoundCategory;
-import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.util.Colors;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.World;
-import org.joml.Vector2i;
 
 public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler> {
     private final PlayerInventory playerInventory;
@@ -163,10 +159,8 @@ public class SoulExplorerScreen extends HandledScreen<SoulExplorerScreenHandler>
 
         Text toDraw = Text.empty();
 
-        //.withColor(Colors.YELLOW)
-        if(player.experienceLevel >= WorldBridgeClient.save_load_xp_cost) toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"");
-        //.withColor(Colors.LIGHT_RED)
-        else toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"");
+        if(player.experienceLevel >= WorldBridgeClient.save_load_xp_cost) toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"").setStyle(Style.EMPTY.withColor(0xFFFFFF55));
+        else toDraw = Text.literal(WorldBridgeClient.save_load_xp_cost+"").setStyle(Style.EMPTY.withColor(0xFFFF5733));
 
         context.drawTextWithShadow(MinecraftClient.getInstance().textRenderer, toDraw, x+183, y+22, Colors.WHITE);
     }
